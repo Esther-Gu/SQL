@@ -54,6 +54,7 @@ WHERE Customer_Name LIKE '%Smith%';
 SELECT SUM(c.Actual_Interest_Rate * c.Financed_Amount) / SUM(c.Financed_Amount) as Weighted_APR
 FROM customers c
 WHERE c.EP_Program = '4 Ride' AND c.Province = 'AB' AND c.Date_of_Birth > '1980-01-01'
+```
 
 -- 4. Find the Financed Amount of CustomerID EP00009.
 ```sql
@@ -61,6 +62,7 @@ SELECT Financed_Amount
 FROM customers
 WHERE CustomerID = 'EP00009';
 ```
+
 -- 5. Fill the Desired_Interest_Rate column based on the Province and EPProgram of the lookup table.
 ```sql
 UPDATE customers
@@ -75,10 +77,10 @@ SET Desired_Interest_Rate =
         END
      FROM lookup
      WHERE Province = customers.Province);
-```
-```sql
+
 SELECT CustomerID, Customer_Name, Province, EP_Program, Desired_Interest_Rate
 FROM customers;
+```
 
 -- 6. List all 4 Ride customer names.
 ```sql
@@ -96,7 +98,6 @@ WHERE customers.EP_Program = '4 Ride'
 ```
 
 # Amortization Schedule creation with Windows function
-/* 
 Create an Amortization Schedule
 Loan Amount			 25,000 
 Rate			13.99%
@@ -107,7 +108,7 @@ No of Payments			 156
 
 Columns are
 PMT#	PMT Date	 Beginning Balance 	 PMT Amount 	 Interest Paid 	 Principal Paid 	 Ending Balance 
-*/
+
 
 ```sql
 DECLARE @loanAmount DECIMAL(18, 2) = 25000.0;
@@ -149,16 +150,14 @@ SELECT * FROM AmortizationSchedule
 OPTION (MAXRECURSION 156);
 ```
 # Pivot table creation with subqueries
-/* 
- Using the Data tab, create a Pivot table with the following requirements
+Using the Data tab, create a Pivot table with the following requirements
 - Province as columns, Date as rows
 - A timeline which filters out Mar applications only
 - Summary by running total of Number and % of applications by day
 
-
 Columns in application are
 ApplicationID	FirstSubmissionDate	Applicant_Province	Applicant_Beacon	Decision
-*/
+
 
 --First, I create the pivot table with Provinces as columns and Date as rows. I list only three provinces (ON, BC, AB) for illustation purposes.
 ```sql
